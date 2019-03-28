@@ -15,6 +15,7 @@ import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
@@ -122,6 +123,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun analyzeFace() {
 
+        progress.visibility = View.VISIBLE
+
         val highAccuracyOpts = FirebaseVisionFaceDetectorOptions.Builder()
                 .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
                 .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
@@ -155,9 +158,14 @@ class MainActivity : AppCompatActivity() {
                         setFace(smileProb > 0.4, rightEyeOpenProb > 0.3, leftEyeOpenProb > 0.3)
                     }
 
+                    progress.visibility = View.GONE
+
                 }
                 .addOnFailureListener {
                     tv_result.text = it.message
+
+                    progress.visibility = View.GONE
+
                 }
 
     }
